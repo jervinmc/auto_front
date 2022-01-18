@@ -278,7 +278,8 @@ export default {
        this.$router.push('/')
        return
      }
-     window.location.href=name
+   
+     window.location.href='/'+name
    }
  }
 };
