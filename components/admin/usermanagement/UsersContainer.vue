@@ -1,0 +1,392 @@
+<template>
+  <v-card elevation="5">
+    <v-dialog v-model="isOpenDetails" persistent width="1200">
+    
+      <v-card class="pa-10" width="1200">
+          <div align="end">
+        <v-icon @click="isOpenDetails=false">mdi-close</v-icon>
+      </div>
+        <div class="text-h6">View User</div>
+        <v-row class="">
+          <v-col cols="4">
+            <div>Username</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.username"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Password</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.password"
+                type="password"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Suffix Name</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.suffix"
+              ></v-text-field>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <div>First Name</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.firstname"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Middle Name</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.middlename"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Last Name</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.lastname"
+              ></v-text-field>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <div>Email Address</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.email"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Age</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.age"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <div>Contact Number</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.contact_number"
+              ></v-text-field>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="8">
+            <div>Address</div>
+            <div>
+              <v-text-field
+                outlined
+                v-model="usersController.address"
+              ></v-text-field>
+            </div>
+          </v-col>
+          <v-col cols="4">
+            <v-checkbox
+              v-model="usersController.is_active"
+              label="is Active"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <div>Display Profile</div>
+            <v-img
+              :src="usersController.image"
+              height="200"
+              width="200"
+            ></v-img>
+          </v-col>
+          <v-col cols="6">
+            <div>Identity Document</div>
+            <v-img
+              :src="usersController.payslip"
+              height="200"
+              width="200"
+            ></v-img>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
+    <users-add
+      :isOpen="dialogAdd"
+      @cancel="dialogAdd = false"
+      @refresh="loadData"
+      :items="selectedItem"
+      :isAdd="isAdd"
+    />
+    <v-container fluid class="pb-0">
+      <v-row class="pl-0" no-gutters align="start" elevation="5">
+        <v-col
+          cols="3"
+          :class="active_page == 0 ? 'tab active pa-5' : 'tab pa-5'"
+          align="center"
+          @click="active_page = 0"
+        >
+          <v-row class="tab-contents justify-start ml-6">
+            <v-icon class="mr-2 action-icons"
+              >mdi-account-multiple-outline</v-icon
+            ><b
+              v-if="$vuetify.breakpoint.lg || $vuetify.breakpoint.xl"
+              class="tab-name"
+              >Admin Management</b
+            >
+          </v-row>
+        </v-col>
+        <v-col
+          cols="3"
+          :class="active_page == 1 ? 'tab active pa-5' : 'tab pa-5'"
+          align="center"
+          @click="active_page = 1"
+        >
+          <v-row class="tab-contents justify-start ml-6">
+            <v-icon class="mr-2 action-icons"
+              >mdi-account-multiple-outline</v-icon
+            ><b
+              v-if="$vuetify.breakpoint.lg || $vuetify.breakpoint.xl"
+              class="tab-name"
+              >Account Management</b
+            >
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+    <div v-if="active_page == 0">
+      <v-row>
+        <v-col align="start" class="pa-10 text-h5" cols="auto">
+          <b>Admin Management</b>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col align-self="center" align="end" class="pr-10">
+          <v-btn
+            class="rnd-btn"
+            rounded
+            large
+            color="#6609af"
+            depressed
+            dark
+            width="170"
+            @click="addItem"
+          >
+            <span class="text-none">Add User</span>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-data-table
+        class="pa-5"
+        :headers="headers"
+        :items="itemAdmin"
+        :loading="isLoading"
+      >
+        <template v-slot:[`item.is_active`]="{ item }">
+          <div :class="item.is_active ? 'green--text' : 'red--text'">
+            <span>{{ item.is_active ? 'Activated' : 'Deactivated' }} </span>
+          </div>
+        </template>
+        <template v-slot:loading>
+          <v-skeleton-loader
+            v-for="n in 5"
+            :key="n"
+            type="list-item-avatar-two-line"
+            class="my-2"
+          ></v-skeleton-loader>
+        </template>
+        <template #[`item.opt`]="{ item }">
+          <v-menu offset-y z-index="1">
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item @click.stop="activate(item)">
+                <v-list-item-content>
+                  <v-list-item-title>Activate</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click.stop="status(item, 'Deactivate')">
+                <v-list-item-content>
+                  <v-list-item-title>Delete</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
+    </div>
+    <div v-else>
+      <v-row>
+        <v-col align="start" class="pa-10 text-h5" cols="auto">
+          <b>Account Management</b>
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
+      <v-data-table
+        class="pa-5"
+        :headers="headers"
+        :items="itemClient"
+        :loading="isLoading"
+      >
+        <template v-slot:[`item.is_active`]="{ item }">
+          <div :class="item.is_active ? 'green--text' : 'red--text'">
+            <span>{{ item.is_active ? 'Activated' : 'Deactivated' }} </span>
+          </div>
+        </template>
+        <template v-slot:loading>
+          <v-skeleton-loader
+            v-for="n in 5"
+            :key="n"
+            type="list-item-avatar-two-line"
+            class="my-2"
+          ></v-skeleton-loader>
+        </template>
+        <template #[`item.opt`]="{ item }">
+          <v-menu offset-y z-index="1">
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item @click.stop="activate(item)">
+                <v-list-item-content>
+                  <v-list-item-title>Activate</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click.stop="viewUser(item)">
+                <v-list-item-content>
+                  <v-list-item-title>View</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click.stop="status(item, 'Deactivate')">
+                <v-list-item-content>
+                  <v-list-item-title>Delete</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
+    </div>
+  </v-card>
+</template>
+
+<script>
+import UsersAdd from './UsersAdd.vue'
+
+export default {
+  components: { UsersAdd },
+  computed: {
+    itemAdmin() {
+      return this.users.filter((item) => {
+        return item.account_type == 'Admin'
+      })
+    },
+    itemClient() {
+      return this.users.filter((item) => {
+        return item.account_type != 'Admin'
+      })
+    },
+  },
+  created() {
+    this.loadData()
+  },
+  data() {
+    return {
+      usersController: [],
+      active_page: 0,
+      events: [],
+      selectedItem: {},
+      isLoading: false,
+      users: [],
+      dialogAdd: false,
+      isAdd: true,
+      isOpenDetails: false,
+      headers: [
+        { text: 'ID', value: 'id' },
+        { text: 'First Name', value: 'firstname' },
+        { text: 'Last Name', value: 'lastname' },
+        { text: 'Email', value: 'email' },
+        { text: 'Account Type', value: 'account_type' },
+        { text: 'Account Status', value: 'is_active' },
+        { text: 'Actions', value: 'opt' },
+        ,
+      ],
+    }
+  },
+  methods: {
+    viewUser(val) {
+      this.isOpenDetails = true
+      this.usersController = val
+    },
+    async activate(val) {
+      this.isLoading = true
+      const res = await this.$axios
+        .post(
+          `/activation/users/`,
+          { is_active: true, id: val.id, email: val.email },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        )
+        .then((res) => {
+          this.loadData()
+        })
+    },
+    editItem(val) {
+      this.selectedItem = val
+      this.dialogAdd = true
+    },
+    addItem() {
+      this.isAdd = true
+      this.dialogAdd = true
+    },
+    loadData() {
+      this.dialogAdd = false
+      this.usersGetall()
+    },
+    async usersGetall() {
+      this.isLoading = true
+      const res = await this.$axios
+        .get(`/users/user/`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          this.users = res.data
+          this.isLoading = false
+        })
+    },
+  },
+}
+</script>
+
+<style>
+</style>
