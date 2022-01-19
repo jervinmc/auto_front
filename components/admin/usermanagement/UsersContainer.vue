@@ -1,5 +1,71 @@
 <template>
   <v-card elevation="5">
+     <v-snackbar
+      top
+      absolute
+      bottom
+      color="success"
+      outlined
+      centered
+      v-model="successfullyAdded"
+    >
+      Successfully Added
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="successfullyAdded = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      top
+      absolute
+      bottom
+      color="success"
+      outlined
+      centered
+      v-model="snackbarDelete"
+    >
+      Successfully Deleted !
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="snackbarDelete = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+     <v-dialog v-model="isDelete" width="500" persistent>
+    <v-card class="pa-10">
+    <div align="center" class="text-h6">Delete User</div>
+    <div align="center" class="pa-10">
+       Are you sure you want to delete?
+    </div>
+      <v-card-actions>
+        <v-row align="center">
+            <v-col align="end">
+                <v-btn color="red" text @click="isDelete=false"> Cancel </v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="success" :loading="buttonLoad" text @click="deleteUser"> Confirm </v-btn>
+            </v-col>
+        </v-row>  
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+    <v-snackbar
+      top
+      absolute
+      bottom
+      color="success"
+      outlined
+      centered
+      v-model="snackbar"
+    >
+      Successfully Added
+      <template v-slot:action="{ attrs }">
+        <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-dialog v-model="isOpenDetails" persistent width="1200">
     
       <v-card class="pa-10" width="1200">
@@ -17,7 +83,7 @@
               ></v-text-field>
             </div>
           </v-col>
-          <v-col cols="4">
+          <!-- <v-col cols="4">
             <div>Password</div>
             <div>
               <v-text-field
@@ -26,7 +92,7 @@
                 type="password"
               ></v-text-field>
             </div>
-          </v-col>
+          </v-col> -->
           <v-col cols="4">
             <div>Suffix Name</div>
             <div>
@@ -121,7 +187,7 @@
               width="200"
             ></v-img>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="6" v-if="usersController.account_type=='Customer'">
             <div>Identity Document</div>
             <v-img
               :src="usersController.payslip"
@@ -135,8 +201,9 @@
     <users-add
       :isOpen="dialogAdd"
       @cancel="dialogAdd = false"
-      @refresh="loadData"
+      @refresh="refresh"
       :items="selectedItem"
+      @notify="successfullyAdded=true"
       :isAdd="isAdd"
     />
     <v-container fluid class="pb-0">
@@ -228,7 +295,7 @@
                   <v-list-item-title>Activate</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click.stop="status(item, 'Deactivate')">
+              <v-list-item @click.stop="deleteItem(item, 'Deactivate')">
                 <v-list-item-content>
                   <v-list-item-title>Delete</v-list-item-title>
                 </v-list-item-content>
@@ -282,7 +349,7 @@
                   <v-list-item-title>View</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click.stop="status(item, 'Deactivate')">
+              <v-list-item @click.stop="deleteItem(item)">
                 <v-list-item-content>
                   <v-list-item-title>Delete</v-list-item-title>
                 </v-list-item-content>
@@ -317,6 +384,12 @@ export default {
   },
   data() {
     return {
+      successfullyAdded:false,
+      snackbarDelete:false,
+      buttonLoad:false,
+      selectedItem:[],
+      isDelete:false,
+      snackbar:false,
       usersController: [],
       active_page: 0,
       events: [],
@@ -339,6 +412,29 @@ export default {
     }
   },
   methods: {
+    async deleteUser(){
+      this.buttonLoad=true
+         const response = await this.$axios
+            .delete(`/users/user/${this.selectedItem.id}/`, {
+              headers: {
+               Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+            })
+            .then(() => {
+              this.loadData()
+              this.snackbarDelete=true
+              this.buttonLoad=false
+              this.isDelete=false
+            });
+    },
+    deleteItem(val){
+      this.isDelete=true
+      this.selectedItem = val
+    }, 
+    refresh(){
+      this.snackbar=true
+      this.loadData()
+    },
     viewUser(val) {
       this.isOpenDetails = true
       this.usersController = val

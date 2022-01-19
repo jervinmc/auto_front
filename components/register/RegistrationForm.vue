@@ -113,10 +113,18 @@
               <div>
                 <v-text-field
                   outlined
+                  hide-details=""
                   type="password"
-                  v-model="users.password"
+                  v-model="password"
                   :rules="standardRules"
                 ></v-text-field>
+              </div>
+              <div style="font-size: 13px">
+                Password must contain at least 8 characters and above.
+                <span
+                  :style="8 > password.length ? 'color:red' : 'color:green'"
+                  >{{ 8 > password.length ? 'weak' : 'strong' }}</span
+                >
               </div>
             </v-col>
             <v-col>
@@ -219,7 +227,7 @@
             <v-col>
               <div>Status</div>
               <div>
-                <v-text-field outlined></v-text-field>
+                <v-select outlined :items="['Single','Married','widowed','divorced','separated']" v-model="users.status"></v-select>
               </div>
             </v-col>
           </v-row>
@@ -248,7 +256,11 @@
                       label="I agree to the Terms and Conditions.(Republic Act 10173  Data Privacy Act of 2012) "
                     ></v-checkbox>
                   </v-col>
-                  <v-col align-self="center" class="pl-0" style="cursor:pointer" >
+                  <v-col
+                    align-self="center"
+                    class="pl-0"
+                    style="cursor: pointer"
+                  >
                     <div>Read More...</div>
                   </v-col>
                 </v-row>
@@ -385,6 +397,44 @@
             </v-col>
           </v-row>
           <div align="center">
+            <v-snackbar
+              top
+              absolute
+              bottom
+              color="error"
+              outlined
+              centered
+              v-model="isWeakPassword"
+            >
+              Password is too weak. Please input at least 8 characters and
+              above.
+              <template v-slot:action="{ attrs }">
+                <v-btn
+                  color="red"
+                  text
+                  v-bind="attrs"
+                  @click="isWeakPassword = false"
+                >
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
+            <v-snackbar
+              top
+              absolute
+              bottom
+              color="error"
+              outlined
+              centered
+              v-model="isExist"
+            >
+              Email is already exists.
+              <template v-slot:action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" @click="isExist = false">
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
             <v-btn
               depressed
               color="#6609af"
@@ -406,6 +456,9 @@ import validations from '@/utils/validations'
 export default {
   data() {
     return {
+      isWeakPassword: false,
+      password: '',
+      isExist: false,
       expirationTime: 60,
       isOTPSuccessful: false,
       isAgree: false,
@@ -431,11 +484,13 @@ export default {
   created() {
     this.loadData()
     const string_length = 6
-    this.otpVal = [...Array(string_length)]
-      .map((i) => (~~(Math.random() * 36)).toString(36))
-      .join('')
+      this.generateCode()
+     
   },
   methods: {
+    generateCode(){
+       this.otpVal = Math.random().toString(36).slice(2)
+    },
     loadData() {
       this.dialogAdd = false
       this.eventsGetall()
@@ -475,22 +530,20 @@ export default {
           this.countDownTimer()
         }, 1000)
       } else {
-        this.otpVal = [...Array(string_length)]
-          .map((i) => (~~(Math.random() * 36)).toString(36))
-          .join('')
+       this.generateCode()
       }
     },
     async goOTP() {
-      if (!this.isAgree) {
+      this.buttonLoad=true
+      if (this.password.length < 8) {
+        this.isWeakPassword = true
+        this.buttonLoad=false
         return
       }
-      this.expirationTime = 60
-      this.countDownTimer()
-      this.buttonLoad = true
       const res = await this.$axios
         .post(
-          `/otp/`,
-          { code: this.otpVal, email: this.users.email },
+          `/checkemail/`,
+          { email: this.users.email },
           {
             headers: {
               // Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -498,9 +551,32 @@ export default {
           }
         )
         .then((res) => {
-          this.isOTP = true
-          this.buttonLoad = false
+          if (res.data.status == 'valid') {
+            this.expirationTime = 60
+            this.countDownTimer()
+            this.buttonLoad = true
+            const res = this.$axios
+              .post(
+                `/otp/`,
+                { code: this.otpVal, email: this.users.email },
+                {
+                  headers: {
+                    // Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                }
+              )
+              .then((res) => {
+                this.isOTP = true
+                this.buttonLoad = false
+              })
+          } else {
+            this.buttonLoad=false
+            this.isExist = true
+          }
         })
+      if (!this.isAgree) {
+        return
+      }
     },
     goToLogin() {
       this.$router.push('/login')
@@ -525,7 +601,7 @@ export default {
         }
         form_data.append('username', this.users.username)
         form_data.append('is_verified', false)
-        form_data.append('password', this.users.password)
+        form_data.append('password', this.password)
         form_data.append('suffix', this.users.suffix)
         form_data.append('firstname', this.users.firstname)
         form_data.append('middlename', this.users.middlename)
@@ -540,6 +616,7 @@ export default {
         form_data.append('location', this.users.location)
         form_data.append('car_transmission', this.users.car_transmission)
         form_data.append('car_brand', this.users.car_brand)
+        form_data.append('civil_status', this.users.status)
         form_data.append('car_category', this.users.car_category)
         form_data.append('car_color', this.users.car_color)
         form_data.append(

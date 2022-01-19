@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pa-5 text-h5">
-      <b>Hello, Juan Delacruz</b>
+      <b>Hello, {{name}}</b>
     </div>
     <div>
       <v-row>
@@ -45,8 +45,17 @@ export default {
   components: {
     GChart,
   },
+  created(){
+    this.loadData()
+  },
+  methods:{
+    loadData(){
+      this.name = localStorage.getItem('firstname')+ ' '+localStorage.getItem('lastname')
+    }
+  },
   data() {
     return {
+      name:'',
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
         ['Year', 'Sales', 'Expenses', 'Profit'],

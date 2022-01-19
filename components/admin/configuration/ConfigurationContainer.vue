@@ -1,5 +1,64 @@
 <template>
   <v-card elevation="5">
+    <v-dialog v-model="isDelete" width="500" persistent>
+    <v-card class="pa-10">
+    <div align="center" class="text-h6">Delete Reference</div>
+    <div align="center" class="pa-10">
+       Are you sure you want to delete?
+    </div>
+      <v-card-actions>
+        <v-row align="center">
+            <v-col align="end">
+                <v-btn color="red" text @click="isDelete=false"> Cancel </v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="success" :loading="buttonLoad" text @click="deleteReference"> Confirm </v-btn>
+            </v-col>
+        </v-row>  
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+      <v-dialog v-model="isEdit" width="1000" persistent>
+    <v-card class="pa-10">
+      <div align="center" class="text-h6">Edit Reference</div>
+      <div class="text-h6">Event</div>
+      <!-- <v-col cols="12" class="px-0">
+        <div>  Type</div>
+        <div>
+          <v-select :items="reference_selection" outlined v-model="reference.reference_type"></v-select>
+        </div>
+      </v-col> -->
+      <v-col cols="12" class="px-0">
+        <div>Code</div>
+        <div>
+          <v-text-field outlined v-model="selectedItem.code"></v-text-field>
+        </div>
+      </v-col>
+      <v-col cols="12" class="px-0">
+        <div>Name</div>
+        <div>
+          <v-text-field outlined v-model="selectedItem.name"></v-text-field>
+        </div>
+      </v-col>
+      <v-card-actions>
+        <v-row align="center">
+          <v-col align="end">
+            <v-btn color="red" text @click="isEdit=false"> Cancel </v-btn>
+          </v-col>
+          <v-col>
+            <v-btn
+              color="success"
+              text
+              @click="editReference"
+              :loading="buttonLoad"
+            >
+              Save
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
       <configuration-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"  />
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
@@ -43,12 +102,12 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item @click.stop="status(item, 'Activate')">
+            <v-list-item @click.stop="editItem(item)">
               <v-list-item-content>
                 <v-list-item-title>Edit</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="status(item, 'Deactivate')">
+            <v-list-item @click.stop="deleteItem(item)">
               <v-list-item-content>
                 <v-list-item-title>Delete</v-list-item-title>
               </v-list-item-content>
@@ -78,6 +137,9 @@ export default {
       reference: [],
       dialogAdd:false,
       isAdd:true,
+      isEdit:false,
+      buttonLoad:false,
+      isDelete:false,
       headers: [
         { text: "ID", value: "id" },
         { text: "Reference Type", value: "reference_type" },
@@ -89,9 +151,64 @@ export default {
     };
   },
   methods: {
+ async deleteReference(){
+      this.buttonLoad = true;
+      try {
+       
+          const response = await this.$axios
+            .delete(`/reference/${this.selectedItem.id}/`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then(() => {
+              this.loadData()
+              this.isDelete=false
+              this.buttonLoad = false;
+
+            });
+      
+      } catch (error) {
+        // alert(error);
+        this.buttonLoad = false;
+      }
+    
+  },
+  deleteItem(val){
+    this.isDelete=true
+      this.selectedItem = val
+  },
+    async editReference() {
+      this.buttonLoad = true;
+      try {
+        let form_data = new FormData();
+        if (this.image != null && this.image != "") {
+          form_data.append("image", this.image);
+        }
+        form_data.append("reference_type", this.selectedItem.reference_type);
+        form_data.append("code", this.selectedItem.code);
+        form_data.append("name", this.selectedItem.name);
+          const response = await this.$axios
+            .patch(`/reference/${this.selectedItem.id}/`, form_data, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then(() => {
+              this.loadData()
+              this.isEdit=false
+              this.buttonLoad = false;
+
+            });
+      
+      } catch (error) {
+        // alert(error);
+        this.buttonLoad = false;
+      }
+    },
     editItem(val){
       this.selectedItem=val
-      this.dialogAdd=true
+      this.isEdit=true
     },
     addItem(){
       this.isAdd=true
@@ -116,6 +233,9 @@ export default {
         });
     },
     loadData() {
+
+      this.dialogAdd=false
+      this.reference=[]
       this.eventsGetall();
     },
     async eventsGetall() {

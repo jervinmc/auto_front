@@ -177,11 +177,6 @@ export default {
           to: "/admin/configuration",
         },
         {
-          icon: "mdi-bullhorn",
-          title: "Reference",
-          to: "/admin/reference",
-        },
-        {
           icon: "mdi-account-group",
           title: "Users",
           to: "/admin/usermanagement",

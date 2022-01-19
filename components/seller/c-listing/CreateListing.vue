@@ -1,5 +1,21 @@
 <template>
   <div class="pa-5">
+    <v-snackbar
+      top
+      absolute
+      bottom
+      color="success"
+      outlined
+      centered
+      v-model="isSuccessful"
+    >
+      Successfull !
+      <template v-slot:action="{ attrs }">
+        <v-btn color="red" text v-bind="attrs" @click="isSuccessful = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-form ref="form">
     <div class="text-h5"><b>Create Listing</b></div>
     <div class="pa-10">
@@ -239,12 +255,13 @@ export default {
   },
   data() {
     return {
+      isSuccessful:false,
       category:[],
       fuel_type:[],
       isBid:false,
       isSwap:false,
       isSell:false,
-      img_holder: './image_placeholder.png',
+      img_holder: '/image_placeholder.png',
       listing: [],
       reference:[],
       image: '',
@@ -331,6 +348,7 @@ export default {
               },
             })
             .then(() => {
+              this.isSuccessful=true
               this.$refs.form.reset()
               this.buttonLoad = false;
             });

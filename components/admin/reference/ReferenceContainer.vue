@@ -43,7 +43,7 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item @click.stop="status(item, 'Activate')">
+            <v-list-item @click.stop="editItem(item, 'Activate')">
               <v-list-item-content>
                 <v-list-item-title>Edit</v-list-item-title>
               </v-list-item-content>
@@ -116,6 +116,7 @@ export default {
         });
     },
     loadData() {
+      this.dialogAdd=false
       this.eventsGetall();
     },
     async eventsGetall() {

@@ -58,6 +58,7 @@ export default {
   },
   data() {
     return {
+      snackbar:false,
       reference:[],
       room_list:['Standard','Deluxe','Suite'],
       events: [],
@@ -93,8 +94,10 @@ export default {
               },
             })
             .then(() => {
+              this.snackbar=true
               this.isRegistered=true
               this.$emit('refresh')
+              this.$emit('notify')
               this.isRegistered=true;
               this.buttonLoad = false;
             });
