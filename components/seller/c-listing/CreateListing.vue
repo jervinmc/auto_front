@@ -51,10 +51,73 @@
               />
             </div>
             <div>
-              <v-checkbox v-model="listing.isSell" :disabled="listing.isBid"  label="Sell">Sell</v-checkbox>
+             
+            </div>
+            <v-row>
+              <v-col>
+                 <v-checkbox v-model="listing.isSell" :disabled="listing.isBid"  label="Sell">Sell</v-checkbox>
                <v-checkbox v-model="listing.isBid" :disabled="listing.isSell || listing.isSwap" label="Bid">Bid</v-checkbox>
                 <v-checkbox v-model="listing.isSwap" :disabled="listing.isBid" label="Swap">Swap</v-checkbox>
-            </div>
+              </v-col>
+              <v-col v-if="listing.isBid">
+                <div>
+                  <v-menu
+                          class="pa-0"
+                          ref="eventDate"
+                          v-model="bidDate"
+                          :close-on-content-click="false"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="date"
+                              outlined
+                              label="Date Bid"
+                              persistent-hint
+                              v-bind="attrs"
+                              @blur="date = date"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="date"
+                            no-title
+                          ></v-date-picker>
+                        </v-menu>
+                </div>
+                <div>
+                  <v-menu
+                          class="pa-0"
+                          ref="eventDate"
+                          v-model="bidTime"
+                          :close-on-content-click="false"
+                          transition="scale-transition"
+                          offset-y
+                          max-width="290px"
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="time"
+                              outlined
+                              label="Time Bid"
+                              persistent-hint
+                              v-bind="attrs"
+                              @blur="time = time"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-time-picker
+                            v-model="time"
+                            format="24hr"
+                          ></v-time-picker>
+                        </v-menu>
+                </div>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col class="d-none">
             <input
@@ -255,6 +318,10 @@ export default {
   },
   data() {
     return {
+      bidDate:false,
+      bidTime:false,
+      time:'',
+      date:'',
       isSuccessful:false,
       category:[],
       fuel_type:[],
@@ -335,6 +402,8 @@ export default {
         form_data.append("category", this.listing.category);
         form_data.append("color", this.listing.color);
         form_data.append("variant", this.listing.variant);
+        form_data.append("current_bid", this.listing.price);
+        form_data.append("start_bidding", this.listing.isBid ? this.date+" "+this.time : null);
         form_data.append("milleage", this.listing.milleage);
         form_data.append("body_type", this.listing.body_type);
         form_data.append("isBid", this.listing.isBid==null ? false : this.listing.isBid);

@@ -205,6 +205,11 @@ export default {
         },
         {
           icon: "mdi-account-group",
+          title: "Transactions",
+          to: "/seller/transactions",
+        },
+        {
+          icon: "mdi-account-group",
           title: "Listing",
           to: "/seller/listing",
         },

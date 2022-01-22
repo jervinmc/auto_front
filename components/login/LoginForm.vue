@@ -43,7 +43,7 @@
       <div class="pa-5" align="start">
         <v-row>
           <v-col>
-            <div>Username</div>
+            <div>Email</div>
             <div>
               <v-text-field outlined v-model="users.email"></v-text-field>
             </div>
