@@ -37,6 +37,9 @@
 
 <script>
 export default {
+  created(){
+    
+  },
   methods:{
     goToMarket(){
       window.location.href='/market'
