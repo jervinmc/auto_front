@@ -12,7 +12,7 @@
     <div align="center">
       <contents />
     </div>
-    <footer-all />
+    <footer-all class="pt-10" />
   </v-container>
 </template>
 
@@ -21,7 +21,7 @@ import FooterAll from '../components/general/FooterAll.vue'
 import Contents from '../components/index/Contents.vue'
 import Hero from '../components/index/Hero.vue'
 export default {
-  components: { Hero, Contents },
+  components: { Hero, Contents,FooterAll },
 }
 </script>
 

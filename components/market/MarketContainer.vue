@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-10">
+  <div :class="$vuetify.breakpoint.width>400 ? 'pa-10' : 'pa-0'">
     <v-row>
       <!-- <v-col cols="2" class="mr-3">
         <div>
@@ -9,7 +9,7 @@
           <v-select outlined :items="brand" v-model="brand_type"></v-select>
         </div>
       </v-col> -->
-    <v-col cols="2">
+    <v-col cols="12" lg="2" md="2" xl="2">
       <v-expansion-panels
         flat
         v-model="isBrandExpanded"
@@ -146,9 +146,9 @@ export default {
       this.color=[]
       this.isLoading = true;
       const res = await this.$axios
-        .get(`/reference/`, {
+        .get(`/referencegetall/`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => {

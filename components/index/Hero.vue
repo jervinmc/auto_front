@@ -9,12 +9,19 @@
           <div class="text-h5 white--text ">
             <b>
               Summer Release<br />
-              2021
+              2022
             </b>
           </div>
           <div class="my-10 white--text">
-            Lorem ipsum dolor sit amet, consetur adispiscing elit, sed et cerat
-            tempor incididunt de labore et dolore magna iliq
+            <v-btn
+              depressed
+              color="#6609af"
+              dark
+              @click="goToMarket"
+    
+            >
+              Shop Now
+            </v-btn>
           </div>
         </v-col>
         <v-col>
@@ -23,13 +30,19 @@
             </v-img> -->
         </v-col>
       </v-row>
-      <v-btn depressed color="#6609af" dark> Shop now </v-btn>
+      
     </v-img>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  methods:{
+    goToMarket(){
+      window.location.href='/market'
+    },
+  }
+}
 </script>
 
 <style>

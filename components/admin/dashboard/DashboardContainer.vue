@@ -8,7 +8,6 @@
         <v-col align="center">
           <div>
             <v-card
-            @click="route('/seller/listing')"
               elevation="10"
               height="200"
               width="200"
@@ -17,11 +16,11 @@
               <v-row>
                 <v-col cols="12">
                   <div class="text-h2 green--text">
-                    <b>{{total_listing}}</b>
+                    <b>{{total_seller}}</b>
                   </div>
                 </v-col>
                 <v-col>
-                  <div class="text-h6"><b>Total Number of Listing</b></div>
+                  <div class="text-h6"><b>Total Number of Seller</b></div>
                 </v-col>
               </v-row>
             </v-card>
@@ -30,7 +29,6 @@
         <v-col align="center">
           <div>
             <v-card
-            @click="route('/seller/sold')"
               elevation="10"
               height="200"
               width="200"
@@ -39,11 +37,11 @@
               <v-row>
                 <v-col cols="12">
                   <div class="text-h2 green--text">
-                    <b>{{total_sold}}</b>
+                    <b>{{total_buyer}}</b>
                   </div>
                 </v-col>
                 <v-col>
-                  <div class="text-h6"><b>Total Number of Sold Car</b></div>
+                  <div class="text-h6"><b>Total Number of Buyer</b></div>
                 </v-col>
               </v-row>
             </v-card>
@@ -75,9 +73,6 @@ export default {
     this.loadData()
   },
   methods: {
-    route(link){
-      window.location.href=link
-    },
     async reports(){
       const response = await this.$axios
             .get(`/getsales/`, {
@@ -86,14 +81,12 @@ export default {
               },
             })
             .then((res)=>{
-              this.reports_list = res.data
-              this.total_listing=res.data['no_listing']
-              this.total_sold=res.data['no_sold']
-              this.chartData1.datasets[0].data[0]=this.total_listing
-             this.chartData1.datasets[0].data[1]=this.total_sold
+            //   this.reports_list = res.data
+              this.total_seller=res.data['no_seller']
+              this.total_buyer=res.data['no_customer']
+              this.chartData1.datasets[0].data[0]=this.total_seller
+             this.chartData1.datasets[0].data[1]=this.total_buyer
              this.chart_data1=true
-
-              console.log(this.reports_list)
             })
     },
     loadData() {
@@ -111,7 +104,7 @@ export default {
         responsive:false,
         hoverBackgroundColor: "red",
         hoverBorderWidth: 10,
-        labels: ["Total Listing", "Total Sold"],
+        labels: ["Total Seller", "Total Customer"],
         datasets: [
           {
             label: "Data One",
@@ -121,8 +114,8 @@ export default {
         ]
       },
 
-      total_sold:0,
-      total_listing:0,
+      total_seller:0,
+      total_buyer:0,
       reports_list:[],
       name: '',
       // Array will be automatically processed with visualization.arrayToDataTable function

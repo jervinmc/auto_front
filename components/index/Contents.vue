@@ -5,15 +5,15 @@
         <v-col cols="8">
           <div style="color: #6609af">SUPORT GLOBAL COOLING</div>
           <div class="pt-5 text-h5">
-            <b>Burn carbohydrates, not hydrocarbons</b>
+            <b>Auto-Oto Cars</b>
           </div>
           <div class="pt-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do<br />
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br />
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+           Buy, Sell, Bid, Swap<br/>
+
+            Easily buy, sell, bid and swap at our marketplace.
           </div>
         </v-col>
-        <v-col align-self="center">
+        <v-col align-self="center" style="cursor:pointer" @click="goToMarket">
             <v-row>
                 <v-col cols="8">
                     <div class="text-h4">
@@ -41,17 +41,17 @@
         >
           <v-card
             class="ma-4 pa-5"
-            height="340"
+            height="300"
             width="250"      
           >
            <div class="text-h6 mb-2">
-               {{n.name}}
+               {{n.brand}}
            </div>
            <div class="mb-4">
                <v-img :src="n.image" height="180" ></v-img>
            </div>
             <div class="pt-5" align="center">
-                <v-btn outlined depressed color="#6609af" dark> Shop now </v-btn>
+                <!-- <v-btn outlined depressed color="#6609af" dark> Shop now </v-btn> -->
             </div>
           </v-card>
         </v-slide-item>
@@ -63,11 +63,30 @@
 
 <script>
 export default {
+  created(){
+    this.loadData()
+  },
+  methods:{
+     goToMarket(){
+      window.location.href='/market'
+    },
+    async loadData() {
+      const res = await this.$axios
+        .get(`/listingGetall/`, {
+          headers: {},
+        })
+        .then((res) => {
+
+          this.shopCars = res.data
+      
+        })
+    },
+  },
     data(){
         return{
-            shopCars:[{"name":"Navarra","image":'https://stimg.cardekho.com/images/carexteriorimages/930x620/Nissan/Magnite/8127/1608191740345/front-left-side-47.jpg?tr=w-880,h-495',},{"name":"Urvan","image":'https://stimg.cardekho.com/images/carexteriorimages/930x620/Nissan/Kicks/7828/1593410136460/front-left-side-47.jpg?tr=w-880,h-495',},{"name":"Navarra","image":'https://www-asia.nissan-cdn.net/content/dam/Nissan/ph/vehicles/navara-bmc/product-code/product-version/teaser/Navara-BMC_Web-Banner-FINAL.jpg.ximg.full.hero.jpg',},{"name":"Fortuner","image":'https://upload.wikimedia.org/wikipedia/commons/3/3b/2020_Nissan_Sentra_SV%2C_front_10.22.20.jpg',},{"name":"Estrada","image":'https://thumbor.forbes.com/thumbor/fit-in/960x/https://www.forbes.com/wheels/wp-content/uploads/2021/11/2022-Nissan-Rogue-powertrain-hero.jpg'}],
+            shopCars:[],
 
-            image_test:['https://stimg.cardekho.com/images/carexteriorimages/930x620/Nissan/Magnite/8127/1608191740345/front-left-side-47.jpg?tr=w-880,h-495','https://stimg.cardekho.com/images/carexteriorimages/930x620/Nissan/Kicks/7828/1593410136460/front-left-side-47.jpg?tr=w-880,h-495','https://www-asia.nissan-cdn.net/content/dam/Nissan/ph/vehicles/navara-bmc/product-code/product-version/teaser/Navara-BMC_Web-Banner-FINAL.jpg.ximg.full.hero.jpg','https://upload.wikimedia.org/wikipedia/commons/3/3b/2020_Nissan_Sentra_SV%2C_front_10.22.20.jpg','https://thumbor.forbes.com/thumbor/fit-in/960x/https://www.forbes.com/wheels/wp-content/uploads/2021/11/2022-Nissan-Rogue-powertrain-hero.jpg']
+            image_test:[]
         }
     }
 }

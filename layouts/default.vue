@@ -23,9 +23,8 @@
       :clipped-left="clipped"
       fixed
       app
-      
       elevation="1"
-      v-if="account_type==null || $route.name=='index' || $route.name=='market' || $route.name=='login' || $route.name=='seller'"
+      v-if="account_type==null || $route.name=='index' || $route.name=='contacts' || $route.name=='about' || $route.name=='market' || $route.name=='login' || $route.name=='seller'"
     >
       <v-img src="/auto_logo.png" height="60" width="60" contain></v-img>
       <v-spacer></v-spacer>
@@ -36,7 +35,7 @@
       <v-toolbar-title  v-if="token==null" class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="route('seller')"><v-icon class="pb-1">mdi-account</v-icon> Be a seller</v-toolbar-title>
       <div class="pl-16"></div>
       <v-toolbar-title v-if="token==null" class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="route('login')"> <v-icon class="pb-1">mdi-login</v-icon>Login</v-toolbar-title>
-      <v-toolbar-title v-else class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="account_type=='Seller' ?  route('seller/dashboard') :  route('customer/dashboard')"> <v-icon class="pb-1">mdi-login</v-icon>{{name}}</v-toolbar-title>
+      <v-toolbar-title v-else class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="account_type=='Seller' ?  route('seller/dashboard') : account_type=='Customer' ?  route('customer/transaction') : route('admin/dashboard')"> <v-icon class="pb-1">mdi-login</v-icon>{{name}}</v-toolbar-title>
       <v-toolbar-title v-if="token==null" class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="route('register')"><v-icon class="pb-1">mdi-plus</v-icon> Register</v-toolbar-title>
      
     </v-app-bar>
@@ -58,7 +57,7 @@
      <v-app-bar  color="#6609af" :clipped-left="clipped" fixed app elevation="1"  v-else-if="account_type=='Customer'" >
     <v-app-bar-nav-icon @click="drawer=true" color="white"></v-app-bar-nav-icon>
     <div class="white--text">
-       Auto-Oto Seller
+       Auto-Oto Customer
     </div>
     </v-app-bar>
     <v-main >
@@ -171,7 +170,7 @@ export default {
           title: "Transactions",
           to: "/events_management",
         },
-        {
+        { 
           icon: "mdi-bullhorn",
           title: "System Configuration",
           to: "/admin/configuration",
@@ -180,6 +179,11 @@ export default {
           icon: "mdi-account-group",
           title: "Users",
           to: "/admin/usermanagement",
+        },
+        {
+          icon: "mdi-account-group",
+          title: "Reports",
+          to: "/admin/reports",
         },
         {
           icon: "mdi-bullhorn",
@@ -194,14 +198,19 @@ export default {
           to: "/seller/dashboard",
         },
         {
-          icon: "mdi-calendar-multiple",
-          title: "Personal Verification",
-          to: "/seller/profile",
+          icon: "mdi-apps",
+          title: "Bid",
+          to: "/seller/bid",
         },
+        // {
+        //   icon: "mdi-calendar-multiple",
+        //   title: "Personal Verification",
+        //   to: "/seller/profile",
+        // },
         {
           icon: "mdi-bullhorn",
           title: "Messages",
-          to: "/",
+          to: "/seller/messages",
         },
         {
           icon: "mdi-account-group",
@@ -210,8 +219,23 @@ export default {
         },
         {
           icon: "mdi-account-group",
+          title: "Swap Cars",
+          to: "/seller/swap",
+        },
+        {
+          icon: "mdi-account-group",
           title: "Listing",
           to: "/seller/listing",
+        },
+        {
+          icon: "mdi-account-group",
+          title: "Sold",
+          to: "/seller/sold",
+        },
+        {
+          icon: "mdi-account-group",
+          title: "Reports",
+          to: "/seller/reports",
         },
         {
           icon: "mdi-calendar-multiple",
@@ -225,29 +249,39 @@ export default {
         },
       ],
       items_customer: [
+        // {
+        //   icon: "mdi-apps",
+        //   title: "Dashboard",
+        //   to: "/customer/dashboard",
+        // },
+        // {
+        //   icon: "mdi-calendar-multiple",
+        //   title: "Personal Verification",
+        //   to: "/customer/profile",
+        // },
         {
-          icon: "mdi-apps",
-          title: "Dashboard",
-          to: "/customer/dashboard",
+          icon: "mdi-calendar-multiple",
+          title: "Messages",
+          to: "/customer/messages",
         },
         {
           icon: "mdi-calendar-multiple",
-          title: "Personal Verification",
-          to: "/customer/profile",
+          title: "Transactions/Activity",
+          to: "/customer/transaction",
         },
+        // {
+        //   icon: "mdi-calendar-multiple",
+        //   title: "Recent Activity",
+        //   to: "/customer/activity",
+        // },
         {
-          icon: "mdi-calendar-multiple",
-          title: "Recent Activity",
-          to: "/customer/activity",
+          icon: "mdi-account-group",
+          title: "Reports",
+          to: "/customer/reports",
         },
          {
           icon: "mdi-calendar-multiple",
           title: "Homepage",
-          to: "/",
-        },
-        {
-          icon: "mdi-bullhorn",
-          title: "Messages",
           to: "/",
         },
       ],

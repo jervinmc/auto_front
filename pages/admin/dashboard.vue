@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import DashboardContainer from '../../components/seller/dashboard/DashboardContainer.vue'
+import DashboardContainer from '../../components/admin/dashboard/DashboardContainer.vue'
+
 export default {
   components: { DashboardContainer },
 

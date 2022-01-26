@@ -80,6 +80,26 @@
     </v-card>
   </div>
   <div v-else class="pt-10">
+    <v-dialog v-model="openTerms" width="900" persistent>
+      <v-card class="pa-10">
+        <div align="center" class="text-h6">
+          <b>AUTO OTO TERMS AND CONDITIONS</b>
+        </div>
+        <div class="pa-10">
+          <div>
+           It is the policy of the State to PROTECT THE FUNDAMENTAL HUMAN RIGHT OF PRIVACY, of communication while ensuring free flow of information to promote innovation and growth. The state recognizes the vital role of information and communications technology in nation-building and its inherent obligation to ensure that personal information in information and communications systems in the government and in the private sector are secured and protected.
+          </div>
+          
+        </div>
+        <v-card-actions>
+          <v-row align="center">
+            <v-col align="end">
+              <v-btn color="grey" text @click="openTerms = false">Back </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-form
       v-model="valid"
       ref="form"
@@ -98,7 +118,7 @@
           <div class="text-h6">User Information</div>
           <v-divider class="my-5"></v-divider>
           <v-row>
-            <v-col>
+            <v-col cols="12" xl="4" lg="4" md="4">
               <div>Username</div>
               <div>
                 <v-text-field
@@ -108,7 +128,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Password</div>
               <div>
                 <v-text-field
@@ -127,7 +147,7 @@
                 >
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Suffix Name</div>
               <div>
                 <v-text-field outlined v-model="users.suffix"></v-text-field>
@@ -135,7 +155,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>First name</div>
               <div>
                 <v-text-field
@@ -145,7 +165,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Middle name</div>
               <div>
                 <v-text-field
@@ -154,7 +174,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Last name</div>
               <div>
                 <v-text-field
@@ -165,8 +185,8 @@
               </div>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col>
+          <v-row >
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Email Address</div>
               <div>
                 <v-text-field
@@ -176,7 +196,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Age</div>
               <div>
                 <v-text-field
@@ -187,7 +207,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Contact Number</div>
               <div>
                 <v-text-field
@@ -199,7 +219,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6">
+            <v-col  cols="12" xl="6" lg="6" md="6">
               <div>Address</div>
               <div>
                 <v-text-field
@@ -232,7 +252,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="12" xl="4" lg="4" md="4">
               <div>Select Occupation</div>
               <div>
                 <v-radio-group
@@ -260,6 +280,7 @@
                     align-self="center"
                     class="pl-0"
                     style="cursor: pointer"
+                    @click="openTerms=true"
                   >
                     <div>Read More...</div>
                   </v-col>
@@ -271,9 +292,8 @@
           <v-row>
             <v-col>
               <v-col>
-                <div>Please Upload I.D and (payslip or proof of billing)</div>
+                <div>Please Upload I.D</div>
                 <span class="pt-2 pr-10 pb-10"><b>Upload Image</b></span>
-
                 <div class="hover_pointer pt-10">
                   <img
                     @click="$refs.file.click()"
@@ -298,7 +318,7 @@
               </v-col>
             </v-col>
 
-            <v-col class="pt-5" v-if="$route.name == 'register'">
+            <v-col class="pt-5" v-if="$route.name == 'register'" >
               <div>Payslip or proof of billing</div>
               <span class="pt-2 pr-10 pb-10"><b>Upload Image</b></span>
 
@@ -326,7 +346,7 @@
             </v-col>
           </v-row>
           <v-row v-if="$route.name == 'register'">
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Price</div>
               <v-range-slider
                 v-model="price"
@@ -340,7 +360,7 @@
                 {{ price[1] }}
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Location</div>
               <div>
                 <v-text-field
@@ -350,7 +370,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Transmission</div>
               <div>
                 <v-select
@@ -363,7 +383,7 @@
             </v-col>
           </v-row>
           <v-row v-if="$route.name == 'register'">
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Brand</div>
               <div>
                 <v-select
@@ -374,7 +394,7 @@
                 ></v-select>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Category</div>
               <div>
                 <v-text-field
@@ -384,7 +404,7 @@
                 ></v-text-field>
               </div>
             </v-col>
-            <v-col>
+            <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Color</div>
               <div>
                 <v-select
@@ -456,6 +476,7 @@ import validations from '@/utils/validations'
 export default {
   data() {
     return {
+      openTerms:false,
       isWeakPassword: false,
       password: '',
       isExist: false,
@@ -534,6 +555,10 @@ export default {
       }
     },
     async goOTP() {
+      if(parseInt(this.users.age)<18){
+        alert('Sorry, We found out that you are not eligible to register due to your age. Thank you!')
+        return
+      }
       this.buttonLoad=true
       if (this.password.length < 8) {
         this.isWeakPassword = true
@@ -582,6 +607,7 @@ export default {
       this.$router.push('/login')
     },
     async submitHandler() {
+      
       if (this.otpVal != this.otpValidate) {
         this.isOTPSuccessful = true
         return
