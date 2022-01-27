@@ -198,9 +198,6 @@
 
           <v-divider class="mx-4"></v-divider>
           <v-card-actions>
-            <!-- <v-btn color="deep-purple lighten-2" text @click="reserve">
-              View
-            </v-btn> -->
             <v-menu offset-y z-index="1">
             <template v-slot:activator="{ attrs, on }">
               <v-btn icon v-bind="attrs" v-on="on">
@@ -223,12 +220,12 @@
           </v-card-actions>
         </v-card>
         </v-col>
-        <v-divider vertical></v-divider>
+        <!-- <v-divider vertical></v-divider>
         <v-col class="pl-10">
           <div class="text-h5">
             <b> Sold Listing</b>
           </div>
-        </v-col>
+        </v-col> -->
       </v-row>
   </div>
 </template>

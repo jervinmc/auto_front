@@ -26,7 +26,7 @@
       elevation="1"
       v-if="account_type==null || $route.name=='index' || $route.name=='contacts' || $route.name=='about' || $route.name=='market' || $route.name=='login' || $route.name=='seller'"
     >
-      <v-img src="/auto_logo.png" height="60" width="60" contain></v-img>
+      <v-img src="/auto_logo.png" height="60" width="60" contain style="cursor:pointer" @click="route('index')"></v-img>
       <v-spacer></v-spacer>
       <v-toolbar-title class="px-4 black--text" style ="cursor:pointer;font-size:16px" @click="route('index')"><v-icon class="pb-1">mdi-home</v-icon>Home</v-toolbar-title>
       <v-toolbar-title class="px-4 black--text" style="cursor:pointer;font-size:16px" @click="route('market')"><v-icon class="pb-1">mdi-store</v-icon> Market</v-toolbar-title>
@@ -165,13 +165,13 @@ export default {
           title: "Dashboard",
           to: "/admin/dashboard",
         },
-        {
-          icon: "mdi-calendar-multiple",
-          title: "Transactions",
-          to: "/events_management",
-        },
+        // {
+        //   icon: "mdi-calendar-multiple",
+        //   title: "Transactions",
+        //   to: "/events_management",
+        // },
         { 
-          icon: "mdi-bullhorn",
+          icon: "mdi-cog",
           title: "System Configuration",
           to: "/admin/configuration",
         },
@@ -181,12 +181,12 @@ export default {
           to: "/admin/usermanagement",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-alert",
           title: "Reports",
           to: "/admin/reports",
         },
         {
-          icon: "mdi-bullhorn",
+          icon: "mdi-home",
           title: "Homepage",
           to: "/",
         },
@@ -198,67 +198,53 @@ export default {
           to: "/seller/dashboard",
         },
         {
-          icon: "mdi-apps",
+          icon: "mdi-scale-unbalanced",
           title: "Bid",
           to: "/seller/bid",
         },
-        // {
-        //   icon: "mdi-calendar-multiple",
-        //   title: "Personal Verification",
-        //   to: "/seller/profile",
-        // },
         {
           icon: "mdi-bullhorn",
           title: "Messages",
           to: "/seller/messages",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-garage",
           title: "Transactions",
           to: "/seller/transactions",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-swap-horizontal-bold",
           title: "Swap Cars",
           to: "/seller/swap",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-calendar-check",
+          title: "Create a Listing",
+          to: "/seller/c-listing",
+        },
+        {
+          icon: "mdi-calendar-text",
           title: "Listing",
           to: "/seller/listing",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-currency-usd",
           title: "Sold",
           to: "/seller/sold",
         },
         {
-          icon: "mdi-account-group",
+          icon: "mdi-alert",
           title: "Reports",
           to: "/seller/reports",
         },
         {
-          icon: "mdi-calendar-multiple",
+          icon: "mdi-home",
           title: "Homepage",
           to: "/",
         },
-        {
-          icon: "mdi-account-group",
-          title: "Create a Listing",
-          to: "/seller/c-listing",
-        },
+        
       ],
       items_customer: [
-        // {
-        //   icon: "mdi-apps",
-        //   title: "Dashboard",
-        //   to: "/customer/dashboard",
-        // },
-        // {
-        //   icon: "mdi-calendar-multiple",
-        //   title: "Personal Verification",
-        //   to: "/customer/profile",
-        // },
         {
           icon: "mdi-calendar-multiple",
           title: "Messages",
@@ -269,11 +255,6 @@ export default {
           title: "Transactions/Activity",
           to: "/customer/transaction",
         },
-        // {
-        //   icon: "mdi-calendar-multiple",
-        //   title: "Recent Activity",
-        //   to: "/customer/activity",
-        // },
         {
           icon: "mdi-account-group",
           title: "Reports",

@@ -212,17 +212,17 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="isOpenDetails" persistent width="1200">
-      <v-card class="pa-10" width="1200">
+      <v-card :class="$vuetify.breakpoint.width>400 ? 'pa-10': 'pa-0'" width="1200">
         <div align="end">
           <v-icon @click="isOpenDetails = false">mdi-close</v-icon>
         </div>
         <div>
           <v-row>
-            <v-col cols="6" class="pa-10">
+            <v-col cols="12" xl="6" lg="6" md="6" :class="$vuetify.breakpoint.width>400 ? 'pa-10': 'pa-0'">
               <v-img :src="selectedItem.image" height="400"></v-img>
             </v-col>
-            <v-col cols="6">
-              <div class="text-h2 mb-10">
+            <v-col cols="12" xl="6" lg="6" md="6" class="pa-5">
+              <div :class="$vuetify.breakpoint.width>400 ? 'text-h2 mb-10': 'text-h4 mb-10'" >
                 <b> {{ selectedItem.title }}</b>
               </div>
               <div class="text-h4">
@@ -260,7 +260,7 @@
                 </div>
               </div>
               <div class="pt-5" align="center">
-                <v-btn depressed color="#6609af" @click="contactNow" dark width="500">
+                <v-btn depressed color="#6609af" @click="contactNow" dark  :width="$vuetify.breakpoint.width>400 ? '500' : '150'">
                   CONTACT SELLER
                 </v-btn>
               </div>
@@ -517,7 +517,7 @@ export default {
     },
     itemRecommended() {
       return this.listing.filter((item) => {
-        return item.brand == localStorage.getItem('brand')
+        return item.brand == localStorage.getItem('brand') && item.price <= localStorage.getItem('price')
       })
     },
   },

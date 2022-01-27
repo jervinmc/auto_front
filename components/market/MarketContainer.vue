@@ -52,7 +52,10 @@
           <v-row class="pl-0" no-gutters align="start" elevation="5">
             <v-col
               v-if="token != null && account_type == 'Customer'"
-              cols="3"
+              cols="4"
+              xl="3"
+              lg="3"
+              md="3"
               :class="active_page == 0 ? 'tab active pa-5' : 'tab pa-5'"
               align="center"
               @click="active_page = 0"
@@ -68,7 +71,10 @@
               </v-row>
             </v-col>
             <v-col
-              cols="3"
+              cols="4"
+              xl="3"
+              lg="3"
+              md="3"
               :class="active_page == 1 ? 'tab active pa-5' : 'tab pa-5'"
               align="center"
               @click="active_page = 1"
@@ -84,7 +90,10 @@
               </v-row>
             </v-col>
             <v-col
-              cols="3"
+              cols="4"
+              xl="3"
+              lg="3"
+              md="3"
               :class="active_page == 2 ? 'tab active pa-5' : 'tab pa-5'"
               align="center"
               @click="active_page = 2"

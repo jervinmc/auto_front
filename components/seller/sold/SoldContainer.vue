@@ -61,7 +61,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Name", value: "customer_name" },
         { text: "Image", value: "image" },,
-        { text: "Actions", value: "opt" },
+        // { text: "Actions", value: "opt" },
         ,
       ],
     };

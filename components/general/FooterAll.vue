@@ -24,13 +24,13 @@
         <div class="py-2"  style="cursor:pointer" @click="route('/contacts')">Contact us</div>
       </v-col>
       <v-col align="start">
-        <div style="color: #6609af"><b>Collections</b></div>
+        <div style="color: #6609af"><b>Contacts</b></div>
         <div class="py-2">
           Burol Main, Dasmariñas Cavite <br />
         </div>
         <div class="py-2">
           autootoncst@gmail.com
- <br />
+            <br />
           09156830724
         </div>
       </v-col>

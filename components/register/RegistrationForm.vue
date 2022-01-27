@@ -397,11 +397,12 @@
             <v-col  cols="12" xl="4" lg="4" md="4">
               <div>Car Category</div>
               <div>
-                <v-text-field
+                <v-select
                   outlined
+                  :items="category_list"
                   v-model="users.car_category"
                   :rules="standardRules"
-                ></v-text-field>
+                ></v-select>
               </div>
             </v-col>
             <v-col  cols="12" xl="4" lg="4" md="4">
@@ -500,6 +501,7 @@ export default {
       color: [],
       transmission: [],
       otpVal: '',
+      category_list:[],
     }
   },
   created() {
@@ -539,6 +541,9 @@ export default {
             //  }
             else if (item.reference_type == 'Car Brand') {
               this.brand.push(item.name)
+            }
+            else if (item.reference_type == 'Category') {
+              this.category_list.push(item.name)
             }
           })
           this.isLoading = false

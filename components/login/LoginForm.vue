@@ -111,6 +111,7 @@ export default {
                 localStorage.setItem("transmission", users.data.car_transmission);
                 localStorage.setItem("brand", users.data.car_brand);
                 localStorage.setItem("account_type",users.data.account_type)
+                localStorage.setItem("price",users.data.car_price)
                 console.warn(users)
                 if(users.data.account_type=='Admin'){
                   window.location.href="/admin/dashboard"
