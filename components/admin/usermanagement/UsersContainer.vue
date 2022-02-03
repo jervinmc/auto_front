@@ -196,6 +196,33 @@
             ></v-img>
           </v-col>
         </v-row>
+      
+        <div class="text-h6" align="center" v-if="usersController.account_type=='Customer'">
+               <b> BUYER CONTRACT AGREEMENT</b>
+            </div >
+            <div class="text-h6" v-else>
+              <b> SELLER CONTRACT AGREEMENT</b>
+            </div>
+            <div>
+              <v-row>
+             <v-col cols="auto" align-self="center">I </v-col><v-col><v-text-field v-model="usersController.name_signed"></v-text-field> </v-col><v-col align-self="center" cols="auto">with a mailing address of</v-col> <v-col ><v-text-field v-model="usersController.mailing_address"></v-text-field>,</v-col>
+              </v-row>
+               <v-row>
+             <v-col cols="auto" align-self="center">City of,</v-col><v-col><v-text-field v-model="usersController.city_of"></v-text-field> </v-col><v-col align-self="center" cols="auto">State of</v-col> <v-col ><v-text-field v-model="usersController.state_of"></v-text-field></v-col><v-col align-self="center" cols="auto">who agrees to the agreement.</v-col>
+              </v-row>
+            </div>
+            <div align="start" v-if="usersController.account_type=='Customer'">
+              I agree that I will be responsible on buying and transacting within or without the system with the seller I’m transacting with. I agree that I will not troll and I will not back out whenever I want without contacting and having any valid reason to the seller. I understand that there will be legal consequences if I somehow became unable to complete the deal;
+            </div>  
+            <div v-else>
+              I agree that I will be responsible on selling and transacting within or without the system with the buyer I’m transacting with. I agree that I will not sell unit that have fake and incomplete papers. I also agree that I will not back out whenever I want without contacting and having any valid reason to the buyer. I understand that there will be legal consequences if I somehow became unable to complete the deal;
+            </div>
+            <div>Signed</div>
+            <v-img
+              :src="usersController.signed_image"
+              height="200"
+              width="200"
+            ></v-img>
       </v-card>
     </v-dialog>
     <users-add

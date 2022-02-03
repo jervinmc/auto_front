@@ -80,6 +80,26 @@
     </v-card>
   </div>
   <div v-else class="pt-10">
+    <v-dialog v-model="fillupContract" width="900" persistent>
+      <v-card class="pa-10">
+        <div align="center" class="text-h6">
+          <b></b>
+        </div>
+        <div class="pa-10">
+          <div>
+           It is the policy of the State to PROTECT THE FUNDAMENTAL HUMAN RIGHT OF PRIVACY, of communication while ensuring free flow of information to promote innovation and growth. The state recognizes the vital role of information and communications technology in nation-building and its inherent obligation to ensure that personal information in information and communications systems in the government and in the private sector are secured and protected.
+          </div>
+          
+        </div>
+        <v-card-actions>
+          <v-row align="center">
+            <v-col align="end">
+              <v-btn color="grey" text @click="openTerms = false">Back </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="openTerms" width="900" persistent>
       <v-card class="pa-10">
         <div align="center" class="text-h6">
@@ -350,8 +370,8 @@
               <div>Car Price</div>
               <v-range-slider
                 v-model="price"
-                max="1500000"
-                min="10000"
+                max="10000000"
+                min="0"
                 hide-details
                 class="align-center"
               >
@@ -456,6 +476,56 @@
                 </v-btn>
               </template>
             </v-snackbar>
+            <v-divider></v-divider>
+            <div class="text-h6" align="center" v-if="$route.name == 'register'">
+               <b> BUYER CONTRACT AGREEMENT</b>
+            </div >
+            <div class="text-h6" align="center">
+             <b> SELLER CONTRACT AGREEMENT</b>
+            </div>
+            <div >
+              <v-row>
+             <v-col cols="auto" align-self="center">I </v-col><v-col><v-text-field v-model="users.name_signed"></v-text-field> </v-col><v-col align-self="center" cols="auto">with a mailing address of</v-col> <v-col ><v-text-field v-model="users.mailing_address"></v-text-field>,</v-col>
+              </v-row>
+               <v-row>
+             <v-col cols="auto" align-self="center">City of,</v-col><v-col><v-text-field v-model="users.city_of"></v-text-field> </v-col><v-col align-self="center" cols="auto">State of</v-col> <v-col ><v-text-field v-model="users.state_of"></v-text-field></v-col><v-col align-self="center" cols="auto">who agrees to the agreement.</v-col>
+              </v-row>
+            </div>
+            <div align="start" v-if="$route.name == 'register'">
+              I agree that I will be responsible on buying and transacting within or without the system with the seller I’m transacting with. I agree that I will not troll and I will not back out whenever I want without contacting and having any valid reason to the seller. I understand that there will be legal consequences if I somehow became unable to complete the deal;
+            </div>
+             <div align="start" v-else>
+              I agree that I will be responsible on selling and transacting within or without the system with the buyer I’m transacting with. I agree that I will not sell unit that have fake and incomplete papers. I also agree that I will not back out whenever I want without contacting and having any valid reason to the buyer. I understand that there will be legal consequences if I somehow became unable to complete the deal;
+            </div>
+            <div>
+                
+            <v-col class="pt-5"  >
+              <!-- <div>Payslip or proof of billing</div> -->
+              <span class="pt-2 pr-10 pb-10"><b>Upload Digital Signature</b></span>
+
+              <div class="hover_pointer pt-10">
+                <img
+                  @click="$refs.filesigned.click()"
+                  :src="img_holder_signed"
+                  alt="item_.js"
+                  height="150"
+                  contain
+                  width="250"
+                  class="mb-0"
+                />
+              </div>
+            </v-col>
+            <v-col class="d-none">
+              <input
+                style="display: none"
+                type="file"
+                id="fileInput"
+                ref="filesigned"
+                accept="image/png, image/jpeg"
+                @change="onFileUploadSigned"
+              />
+            </v-col>
+            </div>
             <v-btn
               depressed
               color="#6609af"
@@ -477,6 +547,9 @@ import validations from '@/utils/validations'
 export default {
   data() {
     return {
+      image_signed:'',
+      img_holder_signed:'image_placeholder.png',
+      fillupContract:false,
       openTerms:false,
       isWeakPassword: false,
       password: '',
@@ -486,7 +559,7 @@ export default {
       isAgree: false,
       isRegistered: false,
       ...validations,
-      price: [10000, 10000],
+      price: [0, 0],
       img_holder: 'image_placeholder.png',
       image: '',
       valid: false,
@@ -630,6 +703,9 @@ export default {
         if (this.image_payslip != null && this.image_payslip != '') {
           form_data.append('payslip', this.image_payslip)
         }
+        if (this.image_signed != null && this.image_signed != '') {
+          form_data.append('signed_image', this.image_signed)
+        }
         form_data.append('username', this.users.username)
         form_data.append('is_verified', false)
         form_data.append('password', this.password)
@@ -648,6 +724,10 @@ export default {
         form_data.append('car_transmission', this.users.car_transmission)
         form_data.append('car_brand', this.users.car_brand)
         form_data.append('civil_status', this.users.status)
+        form_data.append('name_signed', this.users.name_signed)
+        form_data.append('city_of', this.users.city_of)
+        form_data.append('state_of', this.users.state_of)
+        form_data.append('mailing_address', this.users.mailing_address)
         form_data.append('car_category', this.users.car_category)
         form_data.append('car_color', this.users.car_color)
         form_data.append(
@@ -666,6 +746,29 @@ export default {
           })
       } catch {
         this.buttonLoad = false
+      }
+    },
+    
+    onFileUploadSigned(e) {
+      this.image_signed = e
+      e = e.target.files[0]
+      if (e['name'].length > 100) {
+        alert('255 characters exceeded filename.')
+        return
+      }
+      try {
+        if (e.size > 16000000) {
+          alert('Only 15mb file can be accepted.')
+          return
+        }
+      } catch (error) {
+        alert(error)
+        return
+      }
+      this.image_signed = e
+      if (e == null) {
+      } else {
+        this.url, (this.img_holder_signed = URL.createObjectURL(e))
       }
     },
     onFileUploadPayslip(e) {

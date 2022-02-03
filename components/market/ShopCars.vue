@@ -1,5 +1,30 @@
 <template>
   <div>
+    <v-dialog v-model="isOpenRegulations" width="900" persistent>
+      <v-card class="pa-10">
+        <div align="center" class="text-h6">
+          <b>Rules and Regulations for bidding</b>
+        </div>
+        <div class="pa-10">
+          <div>
+           -You must input a higher amount than the current bid. <br/> <br/>
+           -There is a 5 minute countdown, if the user bid, the 5 minute count down will start again.<br/> <br/>
+           -If there's no one who place bid and the 5 minute count down expires the winner would be the last bidder.<br/> <br/>
+           -The seller will have an authority to choose whether he/she wants to give the unit to the winner or the second winner.<br/> <br/>
+           -if the seller doesn't want to give the unit to the winner, the seller must contact the winner to clarify the reason why he didn't choose to transact to the said winner.<br/><br/>
+
+          </div>
+          
+        </div>
+        <v-card-actions>
+          <v-row align="center">
+            <v-col align="end">
+              <v-btn color="grey" text @click="isOpenRegulations = false">Back </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="isOpenBid" persistent width="1200">
       <v-card class="pa-10" width="1200">
         <v-snackbar
@@ -293,6 +318,7 @@
         solo
       ></v-text-field>
     </div>
+    <div v-if="active_page==2" align="end" class="pr-10" @click="isOpenRegulations=true" ><b  style="cursor:pointer">Rules and Regulations</b></div>
     <v-data-iterator
       v-if="token != null"
       :items="
@@ -329,9 +355,9 @@
               <v-img height="150" :src="index.image"></v-img>
               <v-card-title>{{ index.title }}</v-card-title>
               <v-card-text>
-                <!-- <v-row align="center" class="mx-0">
+                <v-row align="center" class="mx-0">
                   <v-rating
-                    :value="4.5"
+                    :value="index.rated"
                     color="amber"
                     dense
                     half-increments
@@ -339,8 +365,8 @@
                     size="14"
                   ></v-rating>
 
-                  <div class="grey--text ms-4">4.5 (413)</div>
-                </v-row> -->
+                  <div class="grey--text ms-4">{{formatPrice(index.rated)}}</div>
+                </v-row>
 
                 <div class="my-4 text-subtitle-1">
                   Php {{ formatPrice(index.price) }}
@@ -517,7 +543,7 @@ export default {
     },
     itemRecommended() {
       return this.listing.filter((item) => {
-        return item.brand == localStorage.getItem('brand') && item.price <= localStorage.getItem('price')
+        return item.brand == localStorage.getItem('brand') && item.price < parseInt(localStorage.getItem('price'))
       })
     },
   },
@@ -535,6 +561,7 @@ export default {
 
   data() {
     return {
+      isOpenRegulations:false,
       commentLabel:'',
       comment_list:[],
       buttonLoad:false,
@@ -840,11 +867,12 @@ export default {
     },
     loadData() {
       this.token = localStorage.getItem('token')
-      if (localStorage.getItem('token') == null) {
-        this.listingFree()
-      } else {
-        this.listingGetall()
-      }
+       this.listingFree()
+      // if (localStorage.getItem('token') == null) {
+      //   this.listingFree()
+      // } else {
+      //   this.listingGetall()
+      // }
     },
     async listingGetall() {
       this.isLoading = true

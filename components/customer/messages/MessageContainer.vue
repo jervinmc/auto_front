@@ -1,5 +1,28 @@
 <template>
   <div align="start">
+        <v-dialog v-model="isOpenRate" width="500" persistent>
+    <v-card class="pa-10">
+    <div align="center" class="text-h6">Rate this seller</div>
+    <div align="center" class="pa-10">
+         <v-rating
+        v-model="rate"
+        background-color="orange lighten-3"
+        color="orange"
+        large
+      ></v-rating>
+    </div>
+      <v-card-actions>
+        <v-row align="center">
+            <v-col align="end">
+                <v-btn color="red" text @click="isOpenRate=false"> Cancel </v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="success" :loading="buttonLoad" text @click="rateNow"> Rate </v-btn>
+            </v-col>
+        </v-row>  
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
     <v-row>
       <v-col cols="auto">
         <v-card max-width="400" class="">
@@ -17,7 +40,7 @@
               type="card"
             ></v-skeleton-loader>
             <template v-for="item in items">
-              <v-list-item :key="item" @click="showChat(item.channel,item.users.firstname)">
+              <v-list-item :key="item" @click="showChat(item.channel,item.users.firstname,item.seller_id)">
                 <v-list-item-avatar>
                   <v-img :src="item.users.image"></v-img>
                 </v-list-item-avatar>
@@ -43,9 +66,9 @@
             <v-toolbar-title>{{name}}</v-toolbar-title>
              
             <v-spacer></v-spacer>
-            <!-- <v-btn icon>
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn> -->
+            <v-btn icon>
+              <v-icon @click="isOpenRate=true">mdi-star</v-icon>
+            </v-btn>
           </v-toolbar>
             <v-skeleton-loader
               v-if="isLoadChat"
@@ -87,24 +110,36 @@ import Pusher from 'pusher-js';
 export default {
   data() {
     return {
+      isOpenRate:false,
+      rate:5,
       isLoadChat:false,
       isLoading:true,
        name:'',
       items: [],
       chatList:[],
       channel:'',
-      message:''
+      message:'',
+      seller_id:0,
     }
   },
   mounted() {
     this.listingGetall()
   },
   methods: {
-    showChat(channel,name){
+    async rateNow(){
+      await this.$axios.post('/rate/',{seller_id:this.seller_id,rate:this.rate},
+      {
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
+      })
+    },
+    showChat(channel,name,seller_id){
         this.chatList=[]
         this.name=name
         this.channel=channel
          this.isLoadChat=true
+         this.seller_id = seller_id
         const res =  this.$axios
         .post(`/chatgetall/`, {"channel":this.channel},{
           headers: {
