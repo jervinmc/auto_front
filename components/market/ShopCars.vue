@@ -471,7 +471,7 @@
                   <div class="grey--text ms-4">4.5 (413)</div> -->
                 </v-row>
                 <div class="text-h6">
-                                  <b>{{ index.title }}</b>
+                   <b>{{ index.title }}</b>
                 </div>
                 <div class="my-4 text-subtitle-1">Php {{formatPrice(index.price) }}</div>
 

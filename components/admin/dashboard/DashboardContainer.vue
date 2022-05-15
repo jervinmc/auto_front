@@ -87,7 +87,7 @@ export default {
               this.chartData1.datasets[0].data[0]=this.total_seller
              this.chartData1.datasets[0].data[1]=this.total_buyer
              this.chart_data1=true
-            })
+            })  
     },
     loadData() {
       this.reports()
@@ -100,19 +100,7 @@ export default {
   data() {
     return {
       chart_data1:false,
-      chartData1: {
-        responsive:false,
-        hoverBackgroundColor: "red",
-        hoverBorderWidth: 10,
-        labels: ["Total Seller", "Total Customer"],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: ['#E3C790', '#344557'],
-            data: [1, 10]
-          }
-        ]
-      },
+      
 
       total_seller:0,
       total_buyer:0,
@@ -126,6 +114,19 @@ export default {
       //   ['2024', 660, 1120],
       //   ['2025', 1030, 540],
       // ],
+      chartData1: {
+        responsive:false,
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: ["Total Seller", "Total Customer"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ['#E3C790', '#344557'],
+            data: [1, 10]
+          }
+        ]
+      },
       chartOptions: {
         chart: {
           title: 'Company Performance',
