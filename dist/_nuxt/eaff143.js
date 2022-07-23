@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[55],{770:function(t,n,e){"use strict";e.r(n);var c={components:{ActivityContainer:e(753).default}},o=e(79),component=Object(o.a)(c,(function(){var t=this.$createElement,n=this._self._c||t;return n("div",[n("activity-container")],1)}),[],!1,null,null,null);n.default=component.exports}}]);

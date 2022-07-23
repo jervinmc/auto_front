@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[57],{772:function(e,n,t){"use strict";t.r(n);var o={components:{MessageContainer:t(754).default}},c=t(79),component=Object(c.a)(o,(function(){var e=this.$createElement,n=this._self._c||e;return n("div",[n("message-container")],1)}),[],!1,null,null,null);n.default=component.exports}}]);
